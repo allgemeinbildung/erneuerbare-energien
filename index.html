@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erneuerbare Energien-Portfolio Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        #chart-container {
+            width: 100%;
+            height: 300px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-style: italic;
+        }
+        #highscore {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Erneuerbare Energien-Portfolio Simulator</h1>
+        <div id="intro">
+            <p>Willkommen zum Erneuerbare Energien-Portfolio Simulator! Du übernimmst die Rolle eines Energiemanagers und musst wichtige Entscheidungen treffen, die den Energiemix, die Kosten und die Emissionsreduktion beeinflussen. Dein Ziel ist es, ein optimales Portfolio an erneuerbaren Energien aufzubauen. Viel Erfolg!</p>
+            <button onclick="startGame()">Spiel starten</button>
+        </div>
+        <div id="game" style="display: none;">
+            <h2>Runde <span id="round-number">1</span>/12</h2>
+            <p id="scenario"></p>
+            <div id="choices"></div>
+            <div id="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
+            <p id="feedback"></p>
+            <button id="next-round" style="display: none;" onclick="nextRound()">Nächste Runde</button>
+        </div>
+        <div id="end-game" style="display: none;">
+            <h2>Spiel beendet</h2>
+            <p>Dein Endergebnis: <span id="final-score"></span> Punkte</p>
+            <p id="highscore">Highscore: <span id="highscore-value">0</span> Punkte</p>
+            <p id="final-feedback"></p>
+            <button onclick="restartGame()">Erneut spielen</button>
+        </div>
+    </div>
+
+    <script>
+        let currentRound = 0;
+        let score = 0;
+        let energyMix = {
+            solar: 20,
+            wind: 20,
+            hydro: 20,
+            geothermal: 20,
+            storage: 20
+        };
+        let costs = 50;
+        let emissionReduction = 50;
+        let highscore = 0;
+        let chart;
+
+        const scenarios = [
+            {
+                question: "Eine neue Solartechnologie verspricht höhere Effizienz. Wie reagierst du?",
+                choices: [
+                    { text: "Großflächig installieren", solar: 15, wind: -5, hydro: -5, geothermal: -5, storage: 0, costs: -10, emissionReduction: 15 },
+                    { text: "Kleine Testanlage errichten", solar: 5, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
+                    { text: "Abwarten und beobachten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: 0, emissionReduction: -5 }
+                ],
+                feedback: {
+                    best: "Ausgezeichnet! Die neue Solartechnologie verbessert unseren Energiemix erheblich und reduziert langfristig die Kosten.",
+                    worst: "Schade, die Chance auf eine Effizienzsteigerung wurde verpasst. In der Energiebranche ist es wichtig, Innovationen zu nutzen."
+                }
+            },
+            {
+                question: "Ein Sturm hat einige Windturbinen beschädigt. Wie gehst du damit um?",
+                choices: [
+                    { text: "Alle Turbinen erneuern", solar: 0, wind: 10, hydro: 0, geothermal: 0, storage: 0, costs: -15, emissionReduction: 10 },
+                    { text: "Nur beschädigte Turbinen reparieren", solar: 0, wind: 5, hydro: 0, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
+                    { text: "In andere Energieformen investieren", solar: 5, wind: -10, hydro: 5, geothermal: 5, storage: 5, costs: -10, emissionReduction: 0 }
+                ],
+                feedback: {
+                    best: "Gute Entscheidung! Die Erneuerung aller Turbinen verbessert die Effizienz und Zuverlässigkeit unseres Windenergie-Sektors.",
+                    worst: "Das war keine optimale Entscheidung. Windenergie ist ein wichtiger Teil unseres Portfolios und sollte nicht vernachlässigt werden."
+                }
+            },
+            {
+                question: "Eine Dürreperiode reduziert die Wasserkraftproduktion. Wie reagierst du?",
+                choices: [
+                    { text: "In Pumpspeicherkraftwerke investieren", solar: 0, wind: 0, hydro: 10, geothermal: 0, storage: 10, costs: -15, emissionReduction: 5 },
+                    { text: "Solarenergie ausbauen", solar: 15, wind: 0, hydro: -5, geothermal: 0, storage: 0, costs: -10, emissionReduction: 10 },
+                    { text: "Keine Maßnahmen ergreifen", solar: 0, wind: 0, hydro: -10, geothermal: 0, storage: 0, costs: 0, emissionReduction: -10 }
+                ],
+                feedback: {
+                    best: "Hervorragend! Pumpspeicherkraftwerke erhöhen die Flexibilität unseres Energiesystems und gleichen Schwankungen aus.",
+                    worst: "Das war keine kluge Entscheidung. Bei Veränderungen der Umweltbedingungen müssen wir aktiv reagieren, um die Energieversorgung sicherzustellen."
+                }
+            },
+            {
+                question: "Ein Durchbruch in der Geothermie-Technologie wurde erzielt. Was tust du?",
+                choices: [
+                    { text: "Massiv in Geothermie investieren", solar: -5, wind: -5, hydro: -5, geothermal: 25, storage: 0, costs: -20, emissionReduction: 15 },
+                    { text: "Moderate Investition in Geothermie", solar: 0, wind: 0, hydro: 0, geothermal: 10, storage: 0, costs: -10, emissionReduction: 5 },
+                    { text: "Weiter auf bewährte Technologien setzen", solar: 5, wind: 5, hydro: 5, geothermal: 0, storage: 0, costs: -5, emissionReduction: 0 }
+                ],
+                feedback: {
+                    best: "Exzellente Wahl! Die massive Investition in Geothermie diversifiziert unser Portfolio und steigert die Grundlastfähigkeit.",
+                    worst: "Schade, eine Chance wurde verpasst. Neue Technologien können unser Energieportfolio erheblich verbessern."
+                }
+            },
+            {
+                question: "Die Regierung bietet Subventionen für Energiespeichertechnologien an. Wie reagierst du?",
+                choices: [
+                    { text: "Großes Batteriespeicherprojekt starten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 20, costs: -5, emissionReduction: 10 },
+                    { text: "In verschiedene Speichertechnologien investieren", solar: 0, wind: 0, hydro: 5, geothermal: 0, storage: 15, costs: -10, emissionReduction: 15 },
+                    { text: "Fokus auf Netzausbau statt Speicher", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: -5, costs: -15, emissionReduction: 5 }
+                ],
+                feedback: {
+                    best: "Sehr gut! Die Investition in verschiedene Speichertechnologien erhöht die Flexibilität und Stabilität unseres Energiesystems.",
+                    worst: "Das war keine optimale Entscheidung. Speichertechnologien sind entscheidend für die Integration erneuerbarer Energien."
+                }
+            },
+            {
+                question: "Ein Nachbarland bietet günstigen Strom aus Kernkraft an. Was tust du?",
+                choices: [
+                    { text: "Angebot annehmen und erneuerbare Energien reduzieren", solar: -10, wind: -10, hydro: -10, geothermal: -10, storage: 0, costs: 15, emissionReduction: -15 },
+                    { text: "Angebot ablehnen und in eigene Produktion investieren", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 5, costs: -15, emissionReduction: 15 },
+                    { text: "Teils annehmen, teils eigene Produktion ausbauen", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: 0, emissionReduction: 0 }
+                ],
+                feedback: {
+                    best: "Ausgezeichnet! Die Investition in eigene erneuerbare Energien stärkt unsere Unabhängigkeit und reduziert Emissionen.",
+                    worst: "Das war keine nachhaltige Entscheidung. Die Reduzierung erneuerbarer Energien macht uns abhängig und erhöht die Emissionen."
+                }
+            },
+            {
+                question: "Eine neue EU-Richtlinie fordert höhere Emissionsreduktionen. Wie passt du dein Portfolio an?",
+                choices: [
+                    { text: "Massiver Ausbau von Solar- und Windenergie", solar: 15, wind: 15, hydro: -5, geothermal: -5, storage: 10, costs: -20, emissionReduction: 20 },
+                    { text: "Gleichmäßiger Ausbau aller erneuerbaren Energien", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 5, costs: -15, emissionReduction: 15 },
+                    { text: "Fokus auf Effizienzsteigerung bestehender Anlagen", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 0, costs: -10, emissionReduction: 10 }
+                ],
+                feedback: {
+                    best: "Hervorragende Strategie! Der massive Ausbau von Solar- und Windenergie ermöglicht eine schnelle Emissionsreduktion.",
+                    worst: "Das war nicht die beste Wahl. Um die EU-Richtlinie zu erfüllen, sind größere Veränderungen nötig."
+                }
+            },
+            {
+                question: "Ein innovatives Start-up bietet eine neue Wellenkraft-Technologie an. Wie reagierst du?",
+                choices: [
+                    { text: "Großes Pilotprojekt starten", solar: -5, wind: -5, hydro: 15, geothermal: 0, storage: 5, costs: -15, emissionReduction: 10 },
+                    { text: "Kleines Forschungsprojekt finanzieren", solar: 0, wind: 0, hydro: 5, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
+                    { text: "Technologie ignorieren und auf Bewährtes setzen", solar: 5, wind: 5, hydro: 0, geothermal: 5, storage: 0, costs: -5, emissionReduction: 0 }
+                ],
+                feedback: {
+                    best: "Mutige und kluge Entscheidung! Das Pilotprojekt könnte uns einen Vorsprung in einer vielversprechenden neuen Technologie verschaffen.",
+                    worst: "Schade, eine interessante Chance wurde verpasst. Innovation ist der Schlüssel zur Verbesserung unseres Energieportfolios."
+                }
+            },
+            {
+                question: "Eine Hitzewelle erhöht den Energiebedarf für Klimaanlagen. Wie reagierst du kurzfristig?",
+                choices: [
+                    { text: "Solarenergie-Notfallausbau", solar: 20, wind: -5, hydro: -5, geothermal: -5, storage: 10, costs: -15, emissionReduction: 5 },
+                    { text: "Energiesparappelle und Verbrauchssteuerung", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 5, costs: -5, emissionReduction: 10 },
+                    { text: "Kurzfristig fossile Reservekraftwerke nutzen", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: -10, costs: 5, emissionReduction: -15 }
+                ],
+                feedback: {
+                    best: "Sehr gut! Der Solarenergie-Notfallausbau nutzt die erhöhte Sonneneinstrahlung optimal aus.",
+                    worst: "Das war keine nachhaltige Lösung. Die Nutzung fossiler Reservekraftwerke sollte vermieden werden."
+                }
+            },
+            {
+                question: "Ein großer Industriebetrieb möchte sich in der Region ansiedeln und benötigt viel Energie. Wie gehst du damit um?",
+                choices: [
+                    { text: "Exklusivvertrag mit erneuerbaren Energien", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 10, costs: -10, emissionReduction: 15 },
+                    { text: "Mix aus erneuerbaren und konventionellen Energien anbieten", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: 0, emissionReduction: 5 },
+                    { text: "Ansiedlung ablehnen wegen Energieknappheit", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: 10, emissionReduction: 10 }
+                ],
+                feedback: {
+                    best: "Ausgezeichnet! Der Exklusivvertrag mit erneuerbaren Energien fördert den Ausbau und schafft einen verlässlichen Großabnehmer.",
+                    worst: "Das war keine optimale Entscheidung. Die Ablehnung der Ansiedlung verhindert wirtschaftliches Wachstum und die Chance, erneuerbare Energien auszubauen."
+                }
+            },
+            {
+                question: "Eine neue Technologie zur CO2-Abscheidung und -Speicherung wird vorgestellt. Wie reagierst du?",
+                choices: [
+                    { text: "Stark in die Technologie investieren", solar: -5, wind: -5, hydro: -5, geothermal: -5, storage: 15, costs: -20, emissionReduction: 25 },
+                    { text: "Kleine Pilotanlage errichten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 5, costs: -10, emissionReduction: 10 },
+                    { text: "Fokus auf Ausbau erneuerbarer Energien beibehalten", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 0, costs: -15, emissionReduction: 15 }
+                ],
+                feedback: {
+                    best: "Gute Wahl! Die Investition in CO2-Abscheidung und -Speicherung kann unsere Emissionsbilanz deutlich verbessern.",
+                    worst: "Das war nicht die beste Entscheidung. Neue Technologien zur Emissionsreduktion sollten nicht ignoriert werden, auch wenn erneuerbare Energien wichtig bleiben."
+                }
+            }
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startGame() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            shuffleArray(scenarios);
+            nextRound();
+            updateChart();
+        }
+
+        function nextRound() {
+            if (currentRound < 12) {
+                document.getElementById('round-number').textContent = currentRound + 1;
+                document.getElementById('scenario').textContent = scenarios[currentRound].question;
+                document.getElementById('choices').innerHTML = '';
+                scenarios[currentRound].choices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = choice.text;
+                    button.onclick = () => makeChoice(index);
+                    document.getElementById('choices').appendChild(button);
+                });
+                document.getElementById('feedback').textContent = '';
+                document.getElementById('next-round').style.display = 'none';
+            } else {
+                endGame();
+            }
+        }
+
+        function makeChoice(choiceIndex) {
+            const choice = scenarios[currentRound].choices[choiceIndex];
+            energyMix.solar += choice.solar;
+            energyMix.wind += choice.wind;
+            energyMix.hydro += choice.hydro;
+            energyMix.geothermal += choice.geothermal;
+            energyMix.storage += choice.storage;
+            costs += choice.costs;
+            emissionReduction += choice.emissionReduction;
+
+            // Ensure values stay within 0-100 range
+            Object.keys(energyMix).forEach(key => {
+                energyMix[key] = Math.max(0, Math.min(100, energyMix[key]));
+            });
+            costs = Math.max(0, Math.min(100, costs));
+            emissionReduction = Math.max(0, Math.min(100, emissionReduction));
+
+            updateChart();
+
+            const feedback = document.getElementById('feedback');
+            if (choiceIndex === getBestChoiceIndex()) {
+                feedback.textContent = scenarios[currentRound].feedback.best;
+            } else if (choiceIndex === getWorstChoiceIndex()) {
+                feedback.textContent = scenarios[currentRound].feedback.worst;
+            } else {
+                feedback.textContent = "Eine akzeptable Entscheidung, aber es gab möglicherweise eine bessere Option.";
+            }
+
+            document.getElementById('choices').innerHTML = '';
+            document.getElementById('next-round').style.display = 'block';
+            currentRound++;
+        }
+
+        function getBestChoiceIndex() {
+            return scenarios[currentRound].choices.reduce((maxIndex, choice, index, choices) => 
+                (choice.solar + choice.wind + choice.hydro + choice.geothermal + choice.storage + choice.costs + choice.emissionReduction > 
+                choices[maxIndex].solar + choices[maxIndex].wind + choices[maxIndex].hydro + choices[maxIndex].geothermal + choices[maxIndex].storage + choices[maxIndex].costs + choices[maxIndex].emissionReduction) ? index : maxIndex
+            , 0);
+        }
+
+        function getWorstChoiceIndex() {
+            return scenarios[currentRound].choices.reduce((minIndex, choice, index, choices) => 
+                (choice.solar + choice.wind + choice.hydro + choice.geothermal + choice.storage + choice.costs + choice.emissionReduction < 
+                choices[minIndex].solar + choices[minIndex].wind + choices[minIndex].hydro + choices[minIndex].geothermal + choices[minIndex].storage + choices[minIndex].costs + choices[minIndex].emissionReduction) ? index : minIndex
+            , 0);
+        }
+
+        function updateChart() {
+            if (chart) {
+                chart.data.datasets[0].data = [
+                    energyMix.solar, 
+                    energyMix.wind, 
+                    energyMix.hydro, 
+                    energyMix.geothermal, 
+                    energyMix.storage
+                ];
+                chart.data.datasets[1].data = [costs, emissionReduction];
+                chart.update();
+            } else {
+                const ctx = document.getElementById('chart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Solar', 'Wind', 'Wasserkraft', 'Geothermie', 'Speicher', 'Kosten', 'Emissionsreduktion'],
+                        datasets: [{
+                            label: 'Energiemix',
+                            data: [
+                                energyMix.solar, 
+                                energyMix.wind, 
+                                energyMix.hydro, 
+                                energyMix.geothermal, 
+                                energyMix.storage
+                            ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }, {
+                            label: 'Kosten und Emissionsreduktion',
+                            data: [costs, emissionReduction, 0, 0, 0],
+                            backgroundColor: [
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(40, 167, 69, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(40, 167, 69, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function endGame() {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('end-game').style.display = 'block';
+            
+            // Calculate final score
+            score = Math.round((Object.values(energyMix).reduce((a, b) => a + b, 0) / 5 + emissionReduction - costs) / 2);
+            
+            document.getElementById('final-score').textContent = score;
+            if (score > highscore) {
+                highscore = score;
+                document.getElementById('highscore-value').textContent = highscore;
+            }
+
+            let feedback = "Dein Spiel ist beendet. ";
+            if (score >= 80) {
+                feedback += "Hervorragende Leistung! Du hast ein ausgezeichnetes Energieportfolio aufgebaut und dabei Kosten und Emissionen optimal berücksichtigt.";
+            } else if (score >= 60) {
+                feedback += "Gute Arbeit! Du hast ein solides Verständnis für die Herausforderungen im Energiesektor gezeigt.";
+            } else if (score >= 40) {
+                feedback += "Du hast einige gute Entscheidungen getroffen, aber es gibt noch Raum für Verbesserungen in der Balance zwischen erneuerbaren Energien, Kosten und Emissionsreduktion.";
+            } else {
+                feedback += "Es war ein herausforderndes Spiel. Versuche beim nächsten Mal, mehr auf die langfristigen Auswirkungen deiner Entscheidungen und die Balance im Energiemix zu achten.";
+            }
+
+            document.getElementById('final-feedback').textContent = feedback;
+        }
+
+        function restartGame() {
+            currentRound = 0;
+            score = 0;
+            energyMix = {
+                solar: 20,
+                wind: 20,
+                hydro: 20,
+                geothermal: 20,
+                storage: 20
+            };
+            costs = 50;
+            emissionReduction = 50;
+            shuffleArray(scenarios);
+            document.getElementById('end-game').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            nextRound();
+            updateChart();
+        }
+    </script>
+</body>
+</html>
