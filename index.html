@@ -46,6 +46,18 @@
             font-weight: bold;
             color: #e74c3c;
         }
+        {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        #scenario-image-container, #chart-container {
+            width: 48%;
+        }
+        #scenario-image {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -58,11 +70,16 @@
         </div>
         <div id="game" style="display: none;">
             <h2>Runde <span id="round-number">1</span>/12</h2>
+            <div id="scenario-container">
+                <div id="scenario-image-container">
+                    <img id="scenario-image" src="" alt="Scenario Image">
+                </div>
+                <div id="chart-container">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
             <p id="scenario"></p>
             <div id="choices"></div>
-            <div id="chart-container">
-                <canvas id="chart"></canvas>
-            </div>
             <p id="feedback"></p>
             <button id="next-round" style="display: none;" onclick="nextRound()">Nächste Runde</button>
         </div>
@@ -93,6 +110,7 @@
         const scenarios = [
             {
                 question: "Ein innovatives Startup hat eine neue Solarzellentechnologie entwickelt, die eine Effizienzsteigerung von 30% verspricht, aber noch nicht großflächig getestet wurde. Die Investitionskosten sind hoch, und es besteht ein Risiko technischer Probleme. Wie reagierst du?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Großflächige Installation auf 50% unserer Solarflächen", solar: 20, wind: -5, hydro: -5, geothermal: -5, storage: 0, costs: -20, emissionReduction: 20 },
                     { text: "Pilotprojekt auf 10% unserer Solarflächen starten", solar: 8, wind: -2, hydro: -2, geothermal: -2, storage: 0, costs: -8, emissionReduction: 8 },
@@ -106,6 +124,7 @@
             },
             {
                 question: "Eine Studie zeigt, dass die Offshore-Windparks in der Nordsee das Potenzial haben, ihre Leistung zu verdoppeln. Allerdings würde dies erhebliche Investitionen erfordern und könnte den Widerstand von Umweltschützern wegen möglicher Auswirkungen auf die marine Ökologie hervorrufen. Wie gehst du vor?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Massiver Ausbau der Offshore-Windparks mit begleitendem Umweltschutzprogramm", solar: -5, wind: 25, hydro: -5, geothermal: -5, storage: 5, costs: -25, emissionReduction: 20 },
                     { text: "Moderater Ausbau mit Fokus auf Effizienzsteigerung bestehender Anlagen", solar: 0, wind: 15, hydro: 0, geothermal: 0, storage: 0, costs: -15, emissionReduction: 10 },
@@ -119,6 +138,7 @@
             },
             {
                 question: "Eine anhaltende Dürreperiode hat die Wasserstände in den Stauseen drastisch gesenkt, was die Wasserkraftproduktion um 40% reduziert. Gleichzeitig steigt der Energiebedarf für Bewässerung in der Landwirtschaft. Wie reagierst du auf diese komplexe Situation?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Investition in ein großes Pumpspeicherkraftwerk und Wasserrecycling-Technologien", solar: 0, wind: 0, hydro: 15, geothermal: 0, storage: 20, costs: -25, emissionReduction: 10 },
                     { text: "Ausbau von Solarenergie zur Bewässerung und Meerwasserentsalzung", solar: 25, wind: 0, hydro: -10, geothermal: 0, storage: 5, costs: -20, emissionReduction: 15 },
@@ -132,6 +152,7 @@
             },
             {
                 question: "Ein internationales Konsortium bietet an, ein revolutionäres Geothermie-Projekt in eurer Region zu entwickeln. Es verspricht konstante Grundlast-Energie, erfordert aber hohe Anfangsinvestitionen und birgt ein geringes seismisches Risiko. Wie entscheidest du?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Vollständige Partnerschaft eingehen und Geothermie zum Schwerpunkt machen", solar: -10, wind: -10, hydro: -5, geothermal: 40, storage: 0, costs: -30, emissionReduction: 25 },
                     { text: "Beteiligung als Juniorpartner mit begrenztem finanziellen Einsatz", solar: -5, wind: -5, hydro: 0, geothermal: 20, storage: 0, costs: -15, emissionReduction: 15 },
@@ -145,6 +166,7 @@
             },
             {
                 question: "Die Regierung plant, die Subventionen für Energiespeichertechnologien zu verdoppeln, aber gleichzeitig die Förderung für Solar- und Windenergie zu kürzen. Wie passt du deine Strategie an diese politische Veränderung an?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Massiver Ausbau von Batteriespeichern und Power-to-Gas-Anlagen", solar: -5, wind: -5, hydro: 0, geothermal: 0, storage: 35, costs: -10, emissionReduction: 20 },
                     { text: "Ausgewogene Investition in Speicher und Effizienzsteigerung bestehender Anlagen", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 20, costs: -15, emissionReduction: 15 },
@@ -158,6 +180,7 @@
             },
             {
                 question: "Ein Nachbarland plant den Bau mehrerer neuer Kernkraftwerke und bietet langfristige Lieferverträge für günstigen Strom an. Gleichzeitig wächst der öffentliche Druck, komplett auf erneuerbare Energien umzusteigen. Wie reagierst du?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Ablehnung der Angebote und massiver Ausbau erneuerbarer Energien", solar: 20, wind: 20, hydro: 5, geothermal: 5, storage: 10, costs: -30, emissionReduction: 25 },
                     { text: "Teilweise Annahme der Angebote zur Grundlastsicherung, moderater Ausbau erneuerbarer Energien", solar: 10, wind: 10, hydro: 0, geothermal: 0, storage: 5, costs: -10, emissionReduction: 10 },
@@ -171,6 +194,7 @@
             },
             {
                 question: "Eine bahnbrechende Technologie zur CO2-Abscheidung und -Speicherung wurde entwickelt. Sie verspricht, die Emissionen bestehender fossiler Kraftwerke um 90% zu reduzieren, ist aber sehr kostspielig und in der Öffentlichkeit umstritten. Wie gehst du damit um?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Großflächige Implementierung an allen fossilen Kraftwerken", solar: -10, wind: -10, hydro: -5, geothermal: -5, storage: 10, costs: -35, emissionReduction: 40 },
                     { text: "Pilotprojekt an einem Kraftwerk und paralleler Ausbau erneuerbarer Energien", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 5, costs: -25, emissionReduction: 25 },
@@ -184,6 +208,7 @@
             },
             {
                 question: "Eine Studie prognostiziert eine Zunahme extremer Wetterereignisse in den nächsten Jahrzehnten, die die Energieinfrastruktur gefährden könnten. Gleichzeitig steigt der Energiebedarf für Klimaanpassungsmaßnahmen. Wie bereitest du das Energiesystem darauf vor?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Massiver Ausbau dezentraler Energiesysteme und Microgrids", solar: 20, wind: 15, hydro: 0, geothermal: 5, storage: 25, costs: -35, emissionReduction: 20 },
                     { text: "Fokus auf Resilienz bestehender Anlagen und moderate Erweiterung", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 15, costs: -25, emissionReduction: 15 },
@@ -197,6 +222,7 @@
             },
             {
                 question: "Ein Konsortium großer Technologieunternehmen plant, einen energieintensiven Hyperscale-Rechenzentrumspark in eurer Region zu errichten. Sie fordern eine Garantie für 100% erneuerbare Energie, bieten aber im Gegenzug Investitionen in Smart-Grid-Technologien. Wie gehst du mit dieser Anfrage um?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Zusage mit massivem Ausbau erneuerbarer Energien und Speichertechnologien", solar: 25, wind: 25, hydro: 10, geothermal: 10, storage: 30, costs: -40, emissionReduction: 15 },
                     { text: "Bedingte Zusage mit geteilten Investitionen in erneuerbare Energien", solar: 15, wind: 15, hydro: 5, geothermal: 5, storage: 20, costs: -25, emissionReduction: 10 },
@@ -210,6 +236,7 @@
             },
             {
                 question: "Eine revolutionäre Fusion-Technologie wurde erfolgreich getestet und verspricht, in 15 Jahren kommerziell nutzbar zu sein. Experten sind gespalten, ob man jetzt schon in die Entwicklung investieren oder weiter auf bewährte erneuerbare Energien setzen sollte. Wie positionierst du dich?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Große Investition in Fusionsforschung und -entwicklung", solar: -15, wind: -15, hydro: -10, geothermal: -10, storage: 10, costs: -40, emissionReduction: 5 },
                     { text: "Moderate Beteiligung an Fusionsforschung bei gleichzeitigem Ausbau erneuerbarer Energien", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: -25, emissionReduction: 10 },
@@ -223,6 +250,7 @@
             },
             {
                 question: "Eine schwere Cyberattacke hat das Stromnetz eines Nachbarlandes lahmgelegt. Die Regierung fordert nun massive Investitionen in die Cybersicherheit von Energieinfrastrukturen. Gleichzeitig steht ein geplantes grenzüberschreitendes Smart-Grid-Projekt zur Debatte. Wie reagierst du?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Priorisierung der Cybersicherheit und Verschiebung des Smart-Grid-Projekts", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 5, costs: -30, emissionReduction: -5 },
                     { text: "Parallele Investition in Cybersicherheit und Smart-Grid-Technologien", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 15, costs: -40, emissionReduction: 10 },
@@ -236,6 +264,7 @@
             },
             {
                 question: "Wissenschaftler haben eine neuartige Methode zur Energiegewinnung aus Algen entwickelt, die CO2 bindet und Biomasse produziert. Das Verfahren ist vielversprechend, aber noch nicht großtechnisch erprobt. Wie gehst du mit dieser Innovation um?",
+                image: "scenario1.jpg",
                 choices: [
                     { text: "Großinvestition in Algenfarmen und Bioraffinerien", solar: -10, wind: -10, hydro: 0, geothermal: 0, storage: 5, costs: -35, emissionReduction: 30 },
                     { text: "Pilotprojekt zur Algenzucht in Kombination mit bestehenden Kraftwerken", solar: -5, wind: -5, hydro: 0, geothermal: 0, storage: 5, costs: -20, emissionReduction: 15 },
@@ -309,6 +338,7 @@
             if (currentRound < 12) {
                 document.getElementById('round-number').textContent = currentRound + 1;
                 document.getElementById('scenario').textContent = scenarios[currentRound].question;
+                document.getElementById('scenario-image').src = `images/${scenarios[currentRound].image}`;
                 document.getElementById('choices').innerHTML = '';
                 scenarios[currentRound].choices.forEach((choice, index) => {
                     const button = document.createElement('button');
