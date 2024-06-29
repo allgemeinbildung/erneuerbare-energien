@@ -92,139 +92,150 @@
 
         const scenarios = [
             {
-                question: "Eine neue Solartechnologie verspricht höhere Effizienz. Wie reagierst du?",
+                question: "Ein innovatives Startup hat eine neue Solarzellentechnologie entwickelt, die eine Effizienzsteigerung von 30% verspricht, aber noch nicht grossflächig getestet wurde. Die Investitionskosten sind hoch, und es besteht ein Risiko technischer Probleme. Wie reagierst du?",
                 choices: [
-                    { text: "Grossflächig installieren", solar: 15, wind: -5, hydro: -5, geothermal: -5, storage: 0, costs: -10, emissionReduction: 15 },
-                    { text: "Kleine Testanlage errichten", solar: 5, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
-                    { text: "Abwarten und beobachten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: 0, emissionReduction: -5 }
+                    { text: "Grossflächige Installation auf 50% unserer Solarflächen", solar: 20, wind: -5, hydro: -5, geothermal: -5, storage: 0, costs: -20, emissionReduction: 20 },
+                    { text: "Pilotprojekt auf 10% unserer Solarflächen starten", solar: 8, wind: -2, hydro: -2, geothermal: -2, storage: 0, costs: -8, emissionReduction: 8 },
+                    { text: "Forschungskooperation eingehen, aber noch nicht installieren", solar: 2, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: -3, emissionReduction: 1 }
                 ],
                 feedback: {
-                    best: "Ausgezeichnet! Die neue Solartechnologie verbessert unseren Energiemix erheblich und reduziert langfristig die Kosten.",
-                    worst: "Schade, die Chance auf eine Effizienzsteigerung wurde verpasst. In der Energiebranche ist es wichtig, Innovationen zu nutzen."
+                    best: "Eine mutige, aber kluge Entscheidung! Die grossflächige Installation maximiert unseren Nutzen aus der neuen Technologie und positioniert uns als Vorreiter.",
+                    worst: "Eine zu vorsichtige Herangehensweise. In der sich schnell entwickelnden Solarbranche können wir es uns nicht leisten, bei Innovationen zu zögern."
                 }
             },
             {
-                question: "Ein Sturm hat einige Windturbinen beschädigt. Wie gehst du damit um?",
+                question: "Eine Studie zeigt, dass die Offshore-Windparks in der Nordsee das Potenzial haben, ihre Leistung zu verdoppeln. Allerdings würde dies erhebliche Investitionen erfordern und könnte den Widerstand von Umweltschützern wegen möglicher Auswirkungen auf die marine Ökologie hervorrufen. Wie gehst du vor?",
                 choices: [
-                    { text: "Alle Turbinen erneuern", solar: 0, wind: 10, hydro: 0, geothermal: 0, storage: 0, costs: -15, emissionReduction: 10 },
-                    { text: "Nur beschädigte Turbinen reparieren", solar: 0, wind: 5, hydro: 0, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
-                    { text: "In andere Energieformen investieren", solar: 5, wind: -10, hydro: 5, geothermal: 5, storage: 5, costs: -10, emissionReduction: 0 }
+                    { text: "Massiver Ausbau der Offshore-Windparks mit begleitendem Umweltschutzprogramm", solar: -5, wind: 25, hydro: -5, geothermal: -5, storage: 5, costs: -25, emissionReduction: 20 },
+                    { text: "Moderater Ausbau mit Fokus auf Effizienzsteigerung bestehender Anlagen", solar: 0, wind: 15, hydro: 0, geothermal: 0, storage: 0, costs: -15, emissionReduction: 10 },
+                    { text: "Investition in Onshore-Windparks statt Offshore-Ausbau", solar: 0, wind: 10, hydro: 0, geothermal: 0, storage: 0, costs: -10, emissionReduction: 5 }
                 ],
                 feedback: {
-                    best: "Gute Entscheidung! Die Erneuerung aller Turbinen verbessert die Effizienz und Zuverlässigkeit unseres Windenergie-Sektors.",
-                    worst: "Das war keine optimale Entscheidung. Windenergie ist ein wichtiger Teil unseres Portfolios und sollte nicht vernachlässigt werden."
+                    best: "Exzellente Wahl! Der massive Ausbau mit Umweltschutzmassnahmen maximiert unsere Windenergieerzeugung und adressiert gleichzeitig ökologische Bedenken.",
+                    worst: "Diese Entscheidung nutzt das Potenzial der Offshore-Windenergie nicht optimal aus. Onshore-Windparks haben oft grössere Akzeptanzprobleme und geringeres Ausbaupotenzial."
                 }
             },
             {
-                question: "Eine Dürreperiode reduziert die Wasserkraftproduktion. Wie reagierst du?",
+                question: "Eine anhaltende Dürreperiode hat die Wasserstände in den Stauseen drastisch gesenkt, was die Wasserkraftproduktion um 40% reduziert. Gleichzeitig steigt der Energiebedarf für Bewässerung in der Landwirtschaft. Wie reagierst du auf diese komplexe Situation?",
                 choices: [
-                    { text: "In Pumpspeicherkraftwerke investieren", solar: 0, wind: 0, hydro: 10, geothermal: 0, storage: 10, costs: -15, emissionReduction: 5 },
-                    { text: "Solarenergie ausbauen", solar: 15, wind: 0, hydro: -5, geothermal: 0, storage: 0, costs: -10, emissionReduction: 10 },
-                    { text: "Keine Massnahmen ergreifen", solar: 0, wind: 0, hydro: -10, geothermal: 0, storage: 0, costs: 0, emissionReduction: -10 }
+                    { text: "Investition in ein grosses Pumpspeicherkraftwerk und Wasserrecycling-Technologien", solar: 0, wind: 0, hydro: 15, geothermal: 0, storage: 20, costs: -25, emissionReduction: 10 },
+                    { text: "Ausbau von Solarenergie zur Bewässerung und Meerwasserentsalzung", solar: 25, wind: 0, hydro: -10, geothermal: 0, storage: 5, costs: -20, emissionReduction: 15 },
+                    { text: "Notfallplan: Temporäre Nutzung von Gaskraftwerken und Wassereinsparungen", solar: 5, wind: 5, hydro: -15, geothermal: 0, storage: 0, costs: -5, emissionReduction: -10 }
                 ],
                 feedback: {
-                    best: "Hervorragend! Pumpspeicherkraftwerke erhöhen die Flexibilität unseres Energiesystems und gleichen Schwankungen aus.",
-                    worst: "Das war keine kluge Entscheidung. Bei Veränderungen der Umweltbedingungen müssen wir aktiv reagieren, um die Energieversorgung sicherzustellen."
+                    best: "Eine vorausschauende Lösung! Pumpspeicherkraftwerke und Wasserrecycling adressieren sowohl die Energiespeicherung als auch die Wasserknappheit.",
+                    worst: "Diese kurzfristige Lösung verschärft langfristig die Probleme. Die Nutzung von Gaskraftwerken erhöht die Emissionen und löst die Wasserknappheit nicht."
                 }
             },
             {
-                question: "Ein Durchbruch in der Geothermie-Technologie wurde erzielt. Was tust du?",
+                question: "Ein internationales Konsortium bietet an, ein revolutionäres Geothermie-Projekt in eurer Region zu entwickeln. Es verspricht konstante Grundlast-Energie, erfordert aber hohe Anfangsinvestitionen und birgt ein geringes seismisches Risiko. Wie entscheidest du?",
                 choices: [
-                    { text: "Massiv in Geothermie investieren", solar: -5, wind: -5, hydro: -5, geothermal: 25, storage: 0, costs: -20, emissionReduction: 15 },
-                    { text: "Moderate Investition in Geothermie", solar: 0, wind: 0, hydro: 0, geothermal: 10, storage: 0, costs: -10, emissionReduction: 5 },
-                    { text: "Weiter auf bewährte Technologien setzen", solar: 5, wind: 5, hydro: 5, geothermal: 0, storage: 0, costs: -5, emissionReduction: 0 }
+                    { text: "Vollständige Partnerschaft eingehen und Geothermie zum Schwerpunkt machen", solar: -10, wind: -10, hydro: -5, geothermal: 40, storage: 0, costs: -30, emissionReduction: 25 },
+                    { text: "Beteiligung als Juniorpartner mit begrenztem finanziellen Einsatz", solar: -5, wind: -5, hydro: 0, geothermal: 20, storage: 0, costs: -15, emissionReduction: 15 },
+                    { text: "Ablehnen und stattdessen in bewährte erneuerbare Technologien investieren", solar: 10, wind: 10, hydro: 5, geothermal: 0, storage: 5, costs: -20, emissionReduction: 10 }
                 ],
                 feedback: {
-                    best: "Exzellente Wahl! Die massive Investition in Geothermie diversifiziert unser Portfolio und steigert die Grundlastfähigkeit.",
-                    worst: "Schade, eine Chance wurde verpasst. Neue Technologien können unser Energieportfolio erheblich verbessern."
+                    best: "Eine mutige und zukunftsweisende Entscheidung! Die Geothermie bietet eine zuverlässige Grundlast und diversifiziert unser Portfolio erheblich.",
+                    worst: "Eine verpasste Gelegenheit. Geothermie hätte unsere Abhängigkeit von wetterabhängigen erneuerbaren Energien reduzieren können."
                 }
             },
             {
-                question: "Die Regierung bietet Subventionen für Energiespeichertechnologien an. Wie reagierst du?",
+                question: "Die Regierung plant, die Subventionen für Energiespeichertechnologien zu verdoppeln, aber gleichzeitig die Förderung für Solar- und Windenergie zu kürzen. Wie passt du deine Strategie an diese politische Veränderung an?",
                 choices: [
-                    { text: "Grosses Batteriespeicherprojekt starten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 20, costs: -5, emissionReduction: 10 },
-                    { text: "In verschiedene Speichertechnologien investieren", solar: 0, wind: 0, hydro: 5, geothermal: 0, storage: 15, costs: -10, emissionReduction: 15 },
-                    { text: "Fokus auf Netzausbau statt Speicher", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: -5, costs: -15, emissionReduction: 5 }
+                    { text: "Massiver Ausbau von Batteriespeichern und Power-to-Gas-Anlagen", solar: -5, wind: -5, hydro: 0, geothermal: 0, storage: 35, costs: -10, emissionReduction: 20 },
+                    { text: "Ausgewogene Investition in Speicher und Effizienzsteigerung bestehender Anlagen", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 20, costs: -15, emissionReduction: 15 },
+                    { text: "Lobbyarbeit gegen die Kürzungen und nur minimale Anpassung der Strategie", solar: 10, wind: 10, hydro: 0, geothermal: 0, storage: 5, costs: -5, emissionReduction: 5 }
                 ],
                 feedback: {
-                    best: "Sehr gut! Die Investition in verschiedene Speichertechnologien erhöht die Flexibilität und Stabilität unseres Energiesystems.",
-                    worst: "Das war keine optimale Entscheidung. Speichertechnologien sind entscheidend für die Integration erneuerbarer Energien."
+                    best: "Hervorragende Anpassung! Der Fokus auf Speichertechnologien wird langfristig die Integration erneuerbarer Energien erleichtern und die Netzstabilität verbessern.",
+                    worst: "Eine zu defensive Strategie. Die Veränderung der Subventionen erfordert eine aktivere Anpassung unserer Investitionsprioritäten."
                 }
             },
             {
-                question: "Ein Nachbarland bietet günstigen Strom aus Kernkraft an. Was tust du?",
+                question: "Ein Nachbarland plant den Bau mehrerer neuer Kernkraftwerke und bietet langfristige Lieferverträge für günstigen Strom an. Gleichzeitig wächst der öffentliche Druck, komplett auf erneuerbare Energien umzusteigen. Wie reagierst du?",
                 choices: [
-                    { text: "Angebot annehmen und erneuerbare Energien reduzieren", solar: -10, wind: -10, hydro: -10, geothermal: -10, storage: 0, costs: 15, emissionReduction: -15 },
-                    { text: "Angebot ablehnen und in eigene Produktion investieren", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 5, costs: -15, emissionReduction: 15 },
-                    { text: "Teils annehmen, teils eigene Produktion ausbauen", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: 0, emissionReduction: 0 }
+                    { text: "Ablehnung der Angebote und massiver Ausbau erneuerbarer Energien", solar: 20, wind: 20, hydro: 5, geothermal: 5, storage: 10, costs: -30, emissionReduction: 25 },
+                    { text: "Teilweise Annahme der Angebote zur Grundlastsicherung, moderater Ausbau erneuerbarer Energien", solar: 10, wind: 10, hydro: 0, geothermal: 0, storage: 5, costs: -10, emissionReduction: 10 },
+                    { text: "Annahme der Angebote und Fokus auf Kostensenkung und Netzstabilität", solar: -5, wind: -5, hydro: -5, geothermal: -5, storage: 15, costs: 10, emissionReduction: -5 }
                 ],
                 feedback: {
-                    best: "Ausgezeichnet! Die Investition in eigene erneuerbare Energien stärkt unsere Unabhängigkeit und reduziert Emissionen.",
-                    worst: "Das war keine nachhaltige Entscheidung. Die Reduzierung erneuerbarer Energien macht uns abhängig und erhöht die Emissionen."
+                    best: "Eine mutige und zukunftsorientierte Entscheidung! Der vollständige Fokus auf erneuerbare Energien stärkt unsere Unabhängigkeit und reduziert langfristig die Emissionen.",
+                    worst: "Diese Entscheidung könnte uns langfristig in Abhängigkeit von Atomstrom bringen und den Übergang zu erneuerbaren Energien verlangsamen."
                 }
             },
             {
-                question: "Eine neue EU-Richtlinie fordert höhere Emissionsreduktionen. Wie passt du dein Portfolio an?",
+                question: "Eine bahnbrechende Technologie zur CO2-Abscheidung und -Speicherung wurde entwickelt. Sie verspricht, die Emissionen bestehender fossiler Kraftwerke um 90% zu reduzieren, ist aber sehr kostspielig und in der Öffentlichkeit umstritten. Wie gehst du damit um?",
                 choices: [
-                    { text: "Massiver Ausbau von Solar- und Windenergie", solar: 15, wind: 15, hydro: -5, geothermal: -5, storage: 10, costs: -20, emissionReduction: 20 },
-                    { text: "Gleichmässiger Ausbau aller erneuerbaren Energien", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 5, costs: -15, emissionReduction: 15 },
-                    { text: "Fokus auf Effizienzsteigerung bestehender Anlagen", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 0, costs: -10, emissionReduction: 10 }
+                    { text: "Grossflächige Implementierung an allen fossilen Kraftwerken", solar: -10, wind: -10, hydro: -5, geothermal: -5, storage: 10, costs: -35, emissionReduction: 40 },
+                    { text: "Pilotprojekt an einem Kraftwerk und paralleler Ausbau erneuerbarer Energien", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 5, costs: -25, emissionReduction: 25 },
+                    { text: "Ablehnung der Technologie und vollständiger Fokus auf erneuerbare Energien", solar: 25, wind: 25, hydro: 10, geothermal: 10, storage: 0, costs: -30, emissionReduction: 20 }
                 ],
                 feedback: {
-                    best: "Hervorragende Strategie! Der massive Ausbau von Solar- und Windenergie ermöglicht eine schnelle Emissionsreduktion.",
-                    worst: "Das war nicht die beste Wahl. Um die EU-Richtlinie zu erfüllen, sind grössere Veränderungen nötig."
+                    best: "Eine ausgewogene Entscheidung! Das Pilotprojekt ermöglicht es uns, die Technologie zu testen, ohne den Ausbau erneuerbarer Energien zu vernachlässigen.",
+                    worst: "Die Ablehnung dieser Technologie könnte eine verpasste Chance sein, die Emissionen kurzfristig drastisch zu senken, während wir langfristig auf erneuerbare Energien umstellen."
                 }
             },
             {
-                question: "Ein innovatives Start-up bietet eine neue Wellenkraft-Technologie an. Wie reagierst du?",
+                question: "Eine Studie prognostiziert eine Zunahme extremer Wetterereignisse in den nächsten Jahrzehnten, die die Energieinfrastruktur gefährden könnten. Gleichzeitig steigt der Energiebedarf für Klimaanpassungsmassnahmen. Wie bereitest du das Energiesystem darauf vor?",
                 choices: [
-                    { text: "Grosses Pilotprojekt starten", solar: -5, wind: -5, hydro: 15, geothermal: 0, storage: 5, costs: -15, emissionReduction: 10 },
-                    { text: "Kleines Forschungsprojekt finanzieren", solar: 0, wind: 0, hydro: 5, geothermal: 0, storage: 0, costs: -5, emissionReduction: 5 },
-                    { text: "Technologie ignorieren und auf Bewährtes setzen", solar: 5, wind: 5, hydro: 0, geothermal: 5, storage: 0, costs: -5, emissionReduction: 0 }
+                    { text: "Massiver Ausbau dezentraler Energiesysteme und Microgrids", solar: 20, wind: 15, hydro: 0, geothermal: 5, storage: 25, costs: -35, emissionReduction: 20 },
+                    { text: "Fokus auf Resilienz bestehender Anlagen und moderate Erweiterung", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 15, costs: -25, emissionReduction: 15 },
+                    { text: "Investition in Energieeffizienz und Nachfragesteuerung", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 10, costs: -15, emissionReduction: 25 }
                 ],
                 feedback: {
-                    best: "Mutige und kluge Entscheidung! Das Pilotprojekt könnte uns einen Vorsprung in einer vielversprechenden neuen Technologie verschaffen.",
-                    worst: "Schade, eine interessante Chance wurde verpasst. Innovation ist der Schlüssel zur Verbesserung unseres Energieportfolios."
+                    best: "Exzellente Wahl! Dezentrale Systeme und Microgrids erhöhen die Resilienz gegenüber extremen Wetterereignissen und fördern die lokale Energieunabhängigkeit.",
+                    worst: "Diese Strategie adressiert zwar wichtige Aspekte, vernachlässigt aber die Notwendigkeit, das Gesamtsystem robuster gegen Klimaänderungen zu machen."
                 }
             },
             {
-                question: "Eine Hitzewelle erhöht den Energiebedarf für Klimaanlagen. Wie reagierst du kurzfristig?",
+                question: "Ein Konsortium grosser Technologieunternehmen plant, einen energieintensiven Hyperscale-Rechenzentrumspark in eurer Region zu errichten. Sie fordern eine Garantie für 100% erneuerbare Energie, bieten aber im Gegenzug Investitionen in Smart-Grid-Technologien. Wie gehst du mit dieser Anfrage um?",
                 choices: [
-                    { text: "Solarenergie-Notfallausbau", solar: 20, wind: -5, hydro: -5, geothermal: -5, storage: 10, costs: -15, emissionReduction: 5 },
-                    { text: "Energiesparappelle und Verbrauchssteuerung", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 5, costs: -5, emissionReduction: 10 },
-                    { text: "Kurzfristig fossile Reservekraftwerke nutzen", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: -10, costs: 5, emissionReduction: -15 }
+                    { text: "Zusage mit massivem Ausbau erneuerbarer Energien und Speichertechnologien", solar: 25, wind: 25, hydro: 10, geothermal: 10, storage: 30, costs: -40, emissionReduction: 15 },
+                    { text: "Bedingte Zusage mit geteilten Investitionen in erneuerbare Energien", solar: 15, wind: 15, hydro: 5, geothermal: 5, storage: 20, costs: -25, emissionReduction: 10 },
+                    { text: "Ablehnung wegen Bedenken hinsichtlich der Netzstabilität und des Ressourcenverbrauchs", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: -5, emissionReduction: 5 }
                 ],
                 feedback: {
-                    best: "Sehr gut! Der Solarenergie-Notfallausbau nutzt die erhöhte Sonneneinstrahlung optimal aus.",
-                    worst: "Das war keine nachhaltige Lösung. Die Nutzung fossiler Reservekraftwerke sollte vermieden werden."
+                    best: "Eine visionäre Entscheidung! Die Partnerschaft wird den Ausbau erneuerbarer Energien beschleunigen und die Entwicklung von Smart-Grid-Technologien vorantreiben.",
+                    worst: "Diese vorsichtige Haltung verpasst eine grosse Chance, den Übergang zu erneuerbaren Energien zu beschleunigen und von Investitionen in moderne Netztechnologien zu profitieren."
                 }
             },
             {
-                question: "Ein grosser Industriebetrieb möchte sich in der Region ansiedeln und benötigt viel Energie. Wie gehst du damit um?",
+                question: "Eine revolutionäre Fusion-Technologie wurde erfolgreich getestet und verspricht, in 15 Jahren kommerziell nutzbar zu sein. Experten sind gespalten, ob man jetzt schon in die Entwicklung investieren oder weiter auf bewährte erneuerbare Energien setzen sollte. Wie positionierst du dich?",
                 choices: [
-                    { text: "Exklusivvertrag mit erneuerbaren Energien", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 10, costs: -10, emissionReduction: 15 },
-                    { text: "Mix aus erneuerbaren und konventionellen Energien anbieten", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: 0, emissionReduction: 5 },
-                    { text: "Ansiedlung ablehnen wegen Energieknappheit", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 0, costs: 10, emissionReduction: 10 }
+                    { text: "Grosse Investition in Fusionsforschung und -entwicklung", solar: -15, wind: -15, hydro: -10, geothermal: -10, storage: 10, costs: -40, emissionReduction: 5 },
+                    { text: "Moderate Beteiligung an Fusionsforschung bei gleichzeitigem Ausbau erneuerbarer Energien", solar: 5, wind: 5, hydro: 0, geothermal: 0, storage: 5, costs: -25, emissionReduction: 10 },
+                    { text: "Fokus auf kurzfristig realisierbare erneuerbare Technologien", solar: 20, wind: 20, hydro: 10, geothermal: 10, storage: 10, costs: -30, emissionReduction: 20 }
                 ],
                 feedback: {
-                    best: "Ausgezeichnet! Der Exklusivvertrag mit erneuerbaren Energien fördert den Ausbau und schafft einen verlässlichen Grossabnehmer.",
-                    worst: "Das war keine optimale Entscheidung. Die Ablehnung der Ansiedlung verhindert wirtschaftliches Wachstum und die Chance, erneuerbare Energien auszubauen."
+                    best: "Eine ausgewogene Strategie! Die moderate Beteiligung an der Fusionsforschung hält Zukunftsoptionen offen, ohne den wichtigen Ausbau aktueller erneuerbarer Technologien zu vernachlässigen.",
+                    worst: "Diese starke Fokussierung auf eine noch nicht ausgereifte Technologie birgt erhebliche Risiken und vernachlässigt den dringend notwendigen Ausbau verfügbarer erneuerbarer Energien."
                 }
             },
             {
-                question: "Eine neue Technologie zur CO2-Abscheidung und -Speicherung wird vorgestellt. Wie reagierst du?",
+                question: "Eine schwere Cyberattacke hat das Stromnetz eines Nachbarlandes lahmgelegt. Die Regierung fordert nun massive Investitionen in die Cybersicherheit von Energieinfrastrukturen. Gleichzeitig steht ein geplantes grenzüberschreitendes Smart-Grid-Projekt zur Debatte. Wie reagierst du?",
                 choices: [
-                    { text: "Stark in die Technologie investieren", solar: -5, wind: -5, hydro: -5, geothermal: -5, storage: 15, costs: -20, emissionReduction: 25 },
-                    { text: "Kleine Pilotanlage errichten", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 5, costs: -10, emissionReduction: 10 },
-                    { text: "Fokus auf Ausbau erneuerbarer Energien beibehalten", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 0, costs: -15, emissionReduction: 15 }
+                    { text: "Priorisierung der Cybersicherheit und Verschiebung des Smart-Grid-Projekts", solar: 0, wind: 0, hydro: 0, geothermal: 0, storage: 5, costs: -30, emissionReduction: -5 },
+                    { text: "Parallele Investition in Cybersicherheit und Smart-Grid-Technologien", solar: 5, wind: 5, hydro: 5, geothermal: 5, storage: 15, costs: -40, emissionReduction: 10 },
+                    { text: "Fokus auf dezentrale Energiesysteme zur Risikominimierung", solar: 20, wind: 15, hydro: -5, geothermal: 5, storage: 25, costs: -35, emissionReduction: 15 }
                 ],
                 feedback: {
-                    best: "Gute Wahl! Die Investition in CO2-Abscheidung und -Speicherung kann unsere Emissionsbilanz deutlich verbessern.",
-                    worst: "Das war nicht die beste Entscheidung. Neue Technologien zur Emissionsreduktion sollten nicht ignoriert werden, auch wenn erneuerbare Energien wichtig bleiben."
+                    best: "Eine zukunftsorientierte Entscheidung! Die Kombination von Cybersicherheit und Smart-Grid-Technologien schafft ein robustes und effizientes Energiesystem.",
+                    worst: "Diese defensive Strategie vernachlässigt die Chancen, die ein sicheres, intelligentes Stromnetz für die Integration erneuerbarer Energien bietet."
+                }
+            },
+            {
+                question: "Wissenschaftler haben eine neuartige Methode zur Energiegewinnung aus Algen entwickelt, die CO2 bindet und Biomasse produziert. Das Verfahren ist vielversprechend, aber noch nicht grosstechnisch erprobt. Wie gehst du mit dieser Innovation um?",
+                choices: [
+                    { text: "Grossinvestition in Algenfarmen und Bioraffinerien", solar: -10, wind: -10, hydro: 0, geothermal: 0, storage: 5, costs: -35, emissionReduction: 30 },
+                    { text: "Pilotprojekt zur Algenzucht in Kombination mit bestehenden Kraftwerken", solar: -5, wind: -5, hydro: 0, geothermal: 0, storage: 5, costs: -20, emissionReduction: 15 },
+                    { text: "Forschungsförderung, aber Fokus auf etablierte erneuerbare Energien", solar: 10, wind: 10, hydro: 5, geothermal: 5, storage: 5, costs: -15, emissionReduction: 10 }
+                ],
+                feedback: {
+                    best: "Eine kluge Entscheidung! Das Pilotprojekt ermöglicht es, das Potenzial der Algentechnologie zu erkunden, ohne übermässige Risiken einzugehen.",
+                    worst: "Diese massive Investition in eine unerprobte Technologie birgt erhebliche finanzielle und technische Risiken. Eine vorsichtigere Herangehensweise wäre ratsam gewesen."
                 }
             }
         ];
-
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
