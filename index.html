@@ -323,7 +323,7 @@
             }
         }
     
-        function makeChoice(choiceIndex) {
+       function makeChoice(choiceIndex) {
             const choice = scenarios[currentRound].choices[choiceIndex];
             energyMix.solar += choice.solar;
             energyMix.wind += choice.wind;
@@ -332,25 +332,29 @@
             energyMix.storage += choice.storage;
             costs += choice.costs;
             emissionReduction += choice.emissionReduction;
-    
+        
             // Ensure values stay within 0-100 range
             Object.keys(energyMix).forEach(key => {
                 energyMix[key] = Math.max(0, Math.min(100, energyMix[key]));
             });
             costs = Math.max(0, Math.min(100, costs));
             emissionReduction = Math.max(0, Math.min(100, emissionReduction));
-    
+        
             updateChart();
-    
-            const feedback = document.getElementById('feedback');
+        
+            const feedbackElement = document.getElementById('feedback');
+            let feedbackText = '';
+        
             if (choiceIndex === getBestChoiceIndex()) {
-                feedback.textContent = scenarios[currentRound].feedback.best;
+                feedbackText = scenarios[currentRound].feedback.best;
             } else if (choiceIndex === getWorstChoiceIndex()) {
-                feedback.textContent = scenarios[currentRound].feedback.worst;
+                feedbackText = scenarios[currentRound].feedback.worst;
             } else {
-                feedback.textContent = scenarios[currentRound].feedback.moderate;
+                feedbackText = scenarios[currentRound].feedback.moderate;
             }
-    
+        
+            feedbackElement.innerHTML = `<p><strong>Deine Entscheidung:</strong> ${choice.text}</p><p>${feedbackText}</p>`;
+        
             document.getElementById('choices').innerHTML = '';
             document.getElementById('next-round').style.display = 'block';
             currentRound++;
