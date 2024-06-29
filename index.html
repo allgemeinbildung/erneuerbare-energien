@@ -260,10 +260,51 @@
             document.getElementById('intro').style.display = 'none';
             document.getElementById('game').style.display = 'block';
             shuffleArray(scenarios);
+            initializeChart(); // Add this line
             nextRound();
-            updateChart();
         }
-    
+
+        function initializeChart() {
+            const ctx = document.getElementById('chart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Solar', 'Wind', 'Wasserkraft', 'Geothermie', 'Speicher', 'Kosten', 'Emissionsreduktion'],
+                    datasets: [{
+                        label: 'Werte',
+                        data: [20, 20, 20, 20, 20, 50, 50], // Initial values
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)',
+                            'rgba(40, 167, 69, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(40, 167, 69, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+            
         function nextRound() {
             if (currentRound < 12) {
                 document.getElementById('round-number').textContent = currentRound + 1;
@@ -334,55 +375,14 @@
                 energyMix.solar,
                 energyMix.wind,
                 energyMix.hydro,
-                geothermal,
-                storage,
+                energyMix.geothermal,
+                energyMix.storage,
                 costs,
                 emissionReduction
             ];
-    
-            if (chart) {
-                chart.data.datasets[0].data = data;
-                chart.update();
-            } else {
-                const ctx = document.getElementById('chart').getContext('2d');
-                chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Solar', 'Wind', 'Wasserkraft', 'Geothermie', 'Speicher', 'Kosten', 'Emissionsreduktion'],
-                        datasets: [{
-                            label: 'Werte',
-                            data: data,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 206, 86, 0.6)',
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)',
-                                'rgba(255, 159, 64, 0.6)',
-                                'rgba(40, 167, 69, 0.6)'
-                            ],
-                            borderColor: [
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                                'rgba(40, 167, 69, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100
-                            }
-                        }
-                    }
-                });
-            }
+        
+            chart.data.datasets[0].data = data;
+            chart.update();
         }
     </script>
 
